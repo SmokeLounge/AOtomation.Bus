@@ -115,9 +115,6 @@
     <AssemblyOriginatorKeyFile>..\SmokeLounge.snk</AssemblyOriginatorKeyFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="MemBus">
-      <HintPath>$(SolutionDir)packages\MemBus.2.0.2\lib\Net40-Client\MemBus.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -130,6 +127,17 @@
     <Compile Include="..\CommonAssemblyInfo.cs">
       <Link>Properties\CommonAssemblyInfo.cs</Link>
     </Compile>
+    <Compile Include="Bus.cs" />
+    <Compile Include="Caliburn.Micro\CmAdapter.cs" />
+    <Compile Include="Caliburn.Micro\CmChannel.cs" />
+    <Compile Include="Caliburn.Micro\CmChannelFactory.cs" />
+    <Compile Include="Caliburn.Micro\EventAggregator.cs" />
+    <Compile Include="Caliburn.Micro\ExtensionMethods.cs" />
+    <Compile Include="IBus.cs" />
+    <Compile Include="IBusAdapter.cs" />
+    <Compile Include="IChannel.cs" />
+    <Compile Include="IChannelFactory.cs" />
+    <Compile Include="IMessageHandler.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
