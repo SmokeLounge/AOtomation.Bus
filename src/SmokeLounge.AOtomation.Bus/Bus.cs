@@ -14,7 +14,10 @@
 
 namespace SmokeLounge.AOtomation.Bus
 {
+    using System;
     using System.Collections.Concurrent;
+    using System.Diagnostics.Contracts;
+    using System.Linq;
 
     public class Bus : IBus
     {
@@ -32,6 +35,8 @@ namespace SmokeLounge.AOtomation.Bus
 
         public Bus(IBusAdapter busAdapter)
         {
+            Contract.Requires<ArgumentNullException>(busAdapter != null);
+
             this.busAdapter = busAdapter;
             this.channels = new ConcurrentDictionary<string, IChannel>();
             this.generalChannel = this.busAdapter.CreateChannel(string.Empty);
@@ -44,7 +49,8 @@ namespace SmokeLounge.AOtomation.Bus
         public void Publish(string channelId, object message)
         {
             IChannel channel;
-            if (!this.channels.TryGetValue(channelId, out channel))
+            this.channels.TryGetValue(channelId, out channel);
+            if (channel == null)
             {
                 return;
             }
@@ -55,8 +61,9 @@ namespace SmokeLounge.AOtomation.Bus
         public void Publish(object message)
         {
             this.generalChannel.Publish(message);
-            foreach (var channel in this.channels.Values)
+            foreach (var channel in this.channels.Values.Where(channel => channel != null))
             {
+                Contract.Assume(channel != null);
                 channel.Publish(message);
             }
         }
@@ -64,14 +71,20 @@ namespace SmokeLounge.AOtomation.Bus
         public void Subscribe(string channelId, object instance)
         {
             var channel = this.channels.GetOrAdd(channelId, newChannelId => this.busAdapter.CreateChannel(newChannelId));
+            if (channel == null)
+            {
+                return;
+            }
+
             channel.Subscribe(instance);
         }
 
         public void Subscribe(object instance)
         {
             this.generalChannel.Subscribe(instance);
-            foreach (var channel in this.channels.Values)
+            foreach (var channel in this.channels.Values.Where(channel => channel != null))
             {
+                Contract.Assume(channel != null);
                 channel.Subscribe(instance);
             }
         }
@@ -79,19 +92,34 @@ namespace SmokeLounge.AOtomation.Bus
         public void Unsubscribe(string channelId, object instance)
         {
             IChannel channel;
-            if (this.channels.TryGetValue(channelId, out channel))
+            this.channels.TryGetValue(channelId, out channel);
+            if (channel == null)
             {
-                channel.Unsubscribe(instance);
+                return;
             }
+
+            channel.Unsubscribe(instance);
         }
 
         public void Unsubscribe(object instance)
         {
             this.generalChannel.Unsubscribe(instance);
-            foreach (var channel in this.channels.Values)
+            foreach (var channel in this.channels.Values.Where(channel => channel != null))
             {
+                Contract.Assume(channel != null);
                 channel.Unsubscribe(instance);
             }
+        }
+
+        #endregion
+
+        #region Methods
+
+        [ContractInvariantMethod]
+        private void ObjectInvariant()
+        {
+            Contract.Invariant(this.channels != null);
+            Contract.Invariant(this.generalChannel != null);
         }
 
         #endregion

@@ -14,6 +14,10 @@
 
 namespace SmokeLounge.AOtomation.Bus
 {
+    using System;
+    using System.Diagnostics.Contracts;
+
+    [ContractClass(typeof(IBusContract))]
     public interface IBus
     {
         #region Public Methods and Operators
@@ -29,6 +33,59 @@ namespace SmokeLounge.AOtomation.Bus
         void Unsubscribe(string channelId, object instance);
 
         void Unsubscribe(object instance);
+
+        #endregion
+    }
+
+    [ContractClassFor(typeof(IBus))]
+    internal abstract class IBusContract : IBus
+    {
+        #region Public Methods and Operators
+
+        public void Publish(string channelId, object message)
+        {
+            Contract.Requires<ArgumentException>(string.IsNullOrWhiteSpace(channelId) == false);
+            Contract.Requires<ArgumentNullException>(message != null);
+
+            throw new NotImplementedException();
+        }
+
+        public void Publish(object message)
+        {
+            Contract.Requires<ArgumentNullException>(message != null);
+
+            throw new NotImplementedException();
+        }
+
+        public void Subscribe(string channelId, object instance)
+        {
+            Contract.Requires<ArgumentException>(string.IsNullOrWhiteSpace(channelId) == false);
+            Contract.Requires<ArgumentNullException>(instance != null);
+
+            throw new NotImplementedException();
+        }
+
+        public void Subscribe(object instance)
+        {
+            Contract.Requires<ArgumentNullException>(instance != null);
+
+            throw new NotImplementedException();
+        }
+
+        public void Unsubscribe(string channelId, object instance)
+        {
+            Contract.Requires<ArgumentException>(string.IsNullOrWhiteSpace(channelId) == false);
+            Contract.Requires<ArgumentNullException>(instance != null);
+
+            throw new NotImplementedException();
+        }
+
+        public void Unsubscribe(object instance)
+        {
+            Contract.Requires<ArgumentNullException>(instance != null);
+
+            throw new NotImplementedException();
+        }
 
         #endregion
     }

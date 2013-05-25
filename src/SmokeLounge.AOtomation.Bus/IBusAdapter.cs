@@ -14,11 +14,31 @@
 
 namespace SmokeLounge.AOtomation.Bus
 {
+    using System;
+    using System.Diagnostics.Contracts;
+
+    [ContractClass(typeof(IBusAdapterContract))]
     public interface IBusAdapter
     {
         #region Public Methods and Operators
 
         IChannel CreateChannel(string channelId);
+
+        #endregion
+    }
+
+    [ContractClassFor(typeof(IBusAdapter))]
+    internal abstract class IBusAdapterContract : IBusAdapter
+    {
+        #region Public Methods and Operators
+
+        public IChannel CreateChannel(string channelId)
+        {
+            Contract.Requires<ArgumentNullException>(channelId != null);
+            Contract.Ensures(Contract.Result<IChannel>() != null);
+
+            throw new NotImplementedException();
+        }
 
         #endregion
     }

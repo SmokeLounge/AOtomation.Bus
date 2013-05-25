@@ -132,12 +132,12 @@
     <Compile Include="Caliburn.Micro\CmChannel.cs" />
     <Compile Include="Caliburn.Micro\CmChannelFactory.cs" />
     <Compile Include="Caliburn.Micro\EventAggregator.cs" />
-    <Compile Include="Caliburn.Micro\ExtensionMethods.cs" />
+    <Compile Include="Caliburn.Micro\IEventAggregator.cs" />
     <Compile Include="IBus.cs" />
     <Compile Include="IBusAdapter.cs" />
     <Compile Include="IChannel.cs" />
     <Compile Include="IChannelFactory.cs" />
-    <Compile Include="IMessageHandler.cs" />
+    <Compile Include="IHandleMessage.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IMessageHandler.cs" company="SmokeLounge">
+// <copyright file="IHandleMessage.cs" company="SmokeLounge">
 //   Copyright © 2013 SmokeLounge.
 //   This program is free software. It comes without any warranty, to
 //   the extent permitted by applicable law. You can redistribute it
@@ -8,21 +8,42 @@
 //   http://www.wtfpl.net/ for more details.
 // </copyright>
 // <summary>
-//   Defines the IMessageHandler type.
+//   Defines the IHandleMessage type.
 // </summary>
 // --------------------------------------------------------------------------------------------------------------------
 
 namespace SmokeLounge.AOtomation.Bus
 {
-    public interface IMessageHandler
+    using System;
+    using System.Diagnostics.Contracts;
+
+    public interface IHandleMessage
     {
     }
 
-    public interface IMessageHandler<T>
+    [ContractClass(typeof(IHandleMessageContract<>))]
+    public interface IHandleMessage<T> : IHandleMessage
+        where T : class
     {
         #region Public Methods and Operators
 
         void Handle(T message);
+
+        #endregion
+    }
+
+    [ContractClassFor(typeof(IHandleMessage<>))]
+    internal abstract class IHandleMessageContract<T> : IHandleMessage<T>
+        where T : class
+    {
+        #region Public Methods and Operators
+
+        public void Handle(T message)
+        {
+            Contract.Requires<ArgumentNullException>(message != null);
+
+            throw new NotImplementedException();
+        }
 
         #endregion
     }

@@ -14,6 +14,8 @@
 
 namespace SmokeLounge.AOtomation.Bus.Caliburn.Micro
 {
+    using System.Diagnostics.Contracts;
+
     public class CmAdapter : IBusAdapter
     {
         #region Fields
@@ -36,6 +38,16 @@ namespace SmokeLounge.AOtomation.Bus.Caliburn.Micro
         public IChannel CreateChannel(string channelId)
         {
             return this.cmChannelFactory.Create(channelId);
+        }
+
+        #endregion
+
+        #region Methods
+
+        [ContractInvariantMethod]
+        private void ObjectInvariant()
+        {
+            Contract.Invariant(this.cmChannelFactory != null);
         }
 
         #endregion

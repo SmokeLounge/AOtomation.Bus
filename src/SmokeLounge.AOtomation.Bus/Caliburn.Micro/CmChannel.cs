@@ -14,6 +14,9 @@
 
 namespace SmokeLounge.AOtomation.Bus.Caliburn.Micro
 {
+    using System;
+    using System.Diagnostics.Contracts;
+
     using global::Caliburn.Micro;
 
     public class CmChannel : IChannel
@@ -30,6 +33,9 @@ namespace SmokeLounge.AOtomation.Bus.Caliburn.Micro
 
         public CmChannel(string id, IEventAggregator eventAggregator)
         {
+            Contract.Requires<ArgumentNullException>(id != null);
+            Contract.Requires<ArgumentNullException>(eventAggregator != null);
+
             this.id = id;
             this.eventAggregator = eventAggregator;
         }
@@ -63,6 +69,17 @@ namespace SmokeLounge.AOtomation.Bus.Caliburn.Micro
         public void Unsubscribe(object instance)
         {
             this.eventAggregator.Unsubscribe(instance);
+        }
+
+        #endregion
+
+        #region Methods
+
+        [ContractInvariantMethod]
+        private void ObjectInvariant()
+        {
+            Contract.Invariant(this.eventAggregator != null);
+            Contract.Invariant(this.id != null);
         }
 
         #endregion

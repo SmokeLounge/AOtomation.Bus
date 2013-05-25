@@ -14,6 +14,10 @@
 
 namespace SmokeLounge.AOtomation.Bus
 {
+    using System;
+    using System.Diagnostics.Contracts;
+
+    [ContractClass(typeof(IChannelContract))]
     public interface IChannel
     {
         #region Public Properties
@@ -29,6 +33,49 @@ namespace SmokeLounge.AOtomation.Bus
         void Subscribe(object instance);
 
         void Unsubscribe(object instance);
+
+        #endregion
+    }
+
+    [ContractClassFor(typeof(IChannel))]
+    internal abstract class IChannelContract : IChannel
+    {
+        #region Public Properties
+
+        public string Id
+        {
+            get
+            {
+                Contract.Ensures(Contract.Result<string>() != null);
+
+                throw new NotImplementedException();
+            }
+        }
+
+        #endregion
+
+        #region Public Methods and Operators
+
+        public void Publish(object message)
+        {
+            Contract.Requires<ArgumentNullException>(message != null);
+
+            throw new NotImplementedException();
+        }
+
+        public void Subscribe(object instance)
+        {
+            Contract.Requires<ArgumentNullException>(instance != null);
+
+            throw new NotImplementedException();
+        }
+
+        public void Unsubscribe(object instance)
+        {
+            Contract.Requires<ArgumentNullException>(instance != null);
+
+            throw new NotImplementedException();
+        }
 
         #endregion
     }
